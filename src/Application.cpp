@@ -1,7 +1,11 @@
 #include <iostream>
 
+#include "Display.h"
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+
+    Display::CreateDisplay();
+    Display::StartGameLoop();
 
     return 0;
 }
