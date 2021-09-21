@@ -27,7 +27,15 @@ project "MinecraftClone"
     }
 
     includedirs {
-        "src"
+        "src",
+
+        "vendor",
+        "vendor/glfw/include",
+    }
+
+    links {
+        "GLFW",
+        "Glad"
     }
 
     filter "system:macosx"
@@ -68,3 +76,6 @@ project "MinecraftClone"
         defines {
             "NDEBUG"
         }
+
+include "vendor/glfw/premake5.lua"
+include "vendor/glad/premake5.lua"
