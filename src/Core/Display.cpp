@@ -2,8 +2,6 @@
 
 #include "../States/GameState.h"
 
-#include <iostream>
-
 void Display::CreateDisplay() {
 
     if(!glfwInit()) {

@@ -1,7 +1,5 @@
 #include "PlayState.h"
 
-#include <iostream>
-
 void PlayState::OnCreate() {
 
 }

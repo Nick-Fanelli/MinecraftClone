@@ -21,6 +21,8 @@ project "MinecraftClone"
     targetdir ( "%{wks.location}/build/" .. outputdir .. "/%{prj.name}")
     objdir ( "%{wks.location}/build-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "src/pch.h"
+
     files {
         "src/**.h",
         "src/**.cpp"
