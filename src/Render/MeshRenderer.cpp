@@ -1,5 +1,7 @@
 #include "MeshRenderer.h"
 
+#include "Camera.h"
+
 MeshRenderer::MeshRenderer() {
 }
 
@@ -11,6 +13,7 @@ void MeshRenderer::Create() {
 void MeshRenderer::Submit(const Mesh& mesh) {
 
     s_Shader.Bind();
+    s_Shader.AddUniformMat4("uViewProjection", Camera::GetViewProjection());
 
     glBindVertexArray(mesh.m_VaoID);
 

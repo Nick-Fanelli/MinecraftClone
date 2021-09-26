@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 Shader::Shader(const std::filesystem::path& vertexFilepath, const std::filesystem::path& fragmentFilepath) :
     m_VertexFilepath(vertexFilepath), m_FragmentFilepath(fragmentFilepath) {}
 
@@ -109,4 +111,9 @@ void Shader::Bind() const {
 
 void Shader::Unbind() {
     glUseProgram(0);
+}
+
+void Shader::AddUniformMat4(const char* varName, const glm::mat4& mat4) const {
+    auto location = glGetUniformLocation(m_ProgramID, varName);
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat4));
 }

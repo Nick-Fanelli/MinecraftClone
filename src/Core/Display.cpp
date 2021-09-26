@@ -1,6 +1,7 @@
 #include "Display.h"
 
 #include "../States/GameState.h"
+#include "../Render/Camera.h"
 
 void Display::CreateDisplay() {
 
@@ -18,6 +19,8 @@ void Display::CreateDisplay() {
 
     s_WindowPtr = glfwCreateWindow(1600, 900, "Minecraft Clone", nullptr, nullptr);
     glfwSwapInterval(1);
+
+    Camera::SetAspectRatio(1600.0f / 900.0f);
 
     if(s_WindowPtr == nullptr) {
         glfwTerminate();

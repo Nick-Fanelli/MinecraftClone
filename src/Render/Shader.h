@@ -14,6 +14,8 @@ public:
 
     void Bind() const;
 
+    void AddUniformMat4(const char* varName, const glm::mat4& mat4) const;
+
     static void Unbind();
 
     operator bool() const { return m_ProgramID != -1; }
