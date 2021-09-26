@@ -1,5 +1,7 @@
 #include "Display.h"
 
+#include "../States/GameState.h"
+
 #include <iostream>
 
 void Display::CreateDisplay() {
@@ -47,11 +49,41 @@ void Display::CreateDisplay() {
 
 void Display::StartGameLoop() {
 
+    float endTime, startTime = (float) glfwGetTime();
+    float deltaTime = 0.0f;
+    float accumulativeDeltaTime = 0.0f;
+
+    uint32_t frameCount = 0;
+    uint32_t currentFps = 0;
+
     while(!glfwWindowShouldClose(s_WindowPtr)) {
+
+        if(deltaTime >= 0) {
+            GameStateManager::OnUpdate(deltaTime);
+
+            // TODO: Update Input
+        }
 
         glfwSwapBuffers(s_WindowPtr);
         glfwPollEvents();
 
+        endTime = (float) glfwGetTime();
+        deltaTime = endTime - startTime;
+        startTime = endTime;
+
+        accumulativeDeltaTime += deltaTime;
+        if(accumulativeDeltaTime >= 1.0f) {
+            currentFps = frameCount;
+            frameCount = 0;
+            accumulativeDeltaTime = 0.0f;
+        }
+
+        frameCount++;
     }
+
+    GameStateManager::OnDestroy();
+
+    glfwDestroyWindow(s_WindowPtr);
+    glfwTerminate();
 
 }
