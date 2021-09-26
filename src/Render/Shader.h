@@ -6,7 +6,6 @@ class Shader {
 
 public:
     Shader() = default;
-    Shader(const Shader&) = delete;
 
     Shader(const std::filesystem::path& vertexFilepath, const std::filesystem::path& fragmentFilepath);
 
@@ -16,6 +15,8 @@ public:
     void Bind() const;
 
     static void Unbind();
+
+    operator bool() const { return m_ProgramID != -1; }
 
     ~Shader();
 

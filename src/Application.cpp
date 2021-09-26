@@ -5,7 +5,6 @@
 #include "States/PlayState.h"
 
 int main() {
-
     Display::CreateDisplay();
 
     PlayState playState{};
