@@ -1,7 +1,7 @@
 #include "Display.h"
 
-#include "../States/GameState.h"
-#include "../Render/Camera.h"
+#include "States/GameState.h"
+#include "Render/Camera.h"
 
 void Display::CreateDisplay() {
 
@@ -19,6 +19,10 @@ void Display::CreateDisplay() {
 
     s_WindowPtr = glfwCreateWindow(1600, 900, "Minecraft Clone", nullptr, nullptr);
     glfwSwapInterval(1);
+
+    glfwSetCursorPosCallback(s_WindowPtr, Camera::MouseCursorCallback);
+
+    glfwSetInputMode(s_WindowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     Camera::SetAspectRatio(1600.0f / 900.0f);
 
@@ -59,8 +63,8 @@ void Display::StartGameLoop() {
 
     while(!glfwWindowShouldClose(s_WindowPtr)) {
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if(deltaTime >= 0) {
             GameStateManager::OnUpdate(deltaTime);
