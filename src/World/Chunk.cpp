@@ -52,7 +52,10 @@ void Chunk::UpdateChunkMesh() {
 
     for(uint32_t i = 0; i < m_Blocks.size(); i++) {
 
-        auto blockPosition = GetBlockPosition(i);        
+        if(m_Blocks[i] == Block::AIR)
+            continue;
+
+        auto blockPosition = GetBlockPosition(i);
 
         glm::vec3 frontNeighbor = { blockPosition.x, blockPosition.y, blockPosition.z - 1.0f };
 
