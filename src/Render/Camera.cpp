@@ -45,7 +45,7 @@ void Camera::Update(float deltaTime) {
 }
 
 static float s_LastX, s_LastY;
-static bool s_FirstMouse;
+static bool s_FirstMouse = true;
 
 void Camera::MouseCursorCallback(GLFWwindow* window, double xPos, double yPos) {
 

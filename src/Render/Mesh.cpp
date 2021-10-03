@@ -2,6 +2,12 @@
 
 void Mesh::Create(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) {
     if(m_VaoID != -1) {
+        glBindBuffer(GL_ARRAY_BUFFER, m_VboID);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), &vertices[0], GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EboID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices[0]), &indices[0], GL_STATIC_DRAW);
+
         return;
     }
 

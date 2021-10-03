@@ -69,6 +69,8 @@ void MeshRenderer::Submit(const Mesh& mesh, const Texture& texture) {
     glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(3);
 
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     glBindVertexArray(0);
 
     Shader::Unbind();
