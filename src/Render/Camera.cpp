@@ -3,10 +3,13 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+// 2.5f default
+static float s_PlayerSpeed = 4.5f;
+
 void Camera::Update(float deltaTime) {
     static GLFWwindow* windowPtr = Display::GetWindowPtr();
 
-    float cameraSpeed = 2.5f * deltaTime;
+    float cameraSpeed = s_PlayerSpeed * deltaTime;
     bool shouldUpdate = false;
 
     if(glfwGetKey(windowPtr, GLFW_KEY_W) == GLFW_PRESS) {

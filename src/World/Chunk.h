@@ -24,10 +24,11 @@ public:
     static constexpr int CHUNK_VOLUME = CHUNK_AREA * CHUNK_SIZE;
 
 private:
-    void AddFace(std::vector<Vertex>* vertex, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth);
+    void AddFace(std::vector<Vertex>* vertex, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
+                 const glm::vec2& texturePosition, bool shouldInvert);
 
 private:
-    std::array<Block::BlockType, CHUNK_VOLUME> m_Blocks;
+    std::array<Block*, CHUNK_VOLUME> m_Blocks;
     Mesh m_Mesh;
 
 };

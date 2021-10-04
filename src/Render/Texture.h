@@ -17,7 +17,10 @@ public:
             glBindTexture(GL_TEXTURE_2D, m_TextureID);
     }
 
-    const GLuint GetTextureID() const { return m_TextureID; }
+    int GetWidth() const { return m_Width; }
+    int GetHeight() const { return m_Height; }
+
+    GLuint GetTextureID() const { return m_TextureID; }
 
     ~Texture() { Destroy(); }
 
