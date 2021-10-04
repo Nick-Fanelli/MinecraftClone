@@ -1,18 +1,26 @@
 #version 410 core
 
+const float ambientStrength = 0.5;
+const vec3 ambient = vec3(ambientStrength);
+
+const vec3 lightPosition = vec3(0, 40, 15);
+
+in vec3 vPosition;
 in vec3 vNormal;
 in vec2 vTextureCoords;
-in float vTextureID;
 
 uniform sampler2D uTexture;
 
 out vec4 color;
 
 void main() {
-    vNormal;
 
-    if(vTextureID == 0.0f)
-        color = vec4(1.0);
-    else
-        color = texture(uTexture, vTextureCoords);
+    vec3 lightingResult = ambient;
+    vec3 norm = normalize(vNormal);
+    vec3 lightDir = normalize(lightPosition - vPosition);
+
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = vec3(diff);
+
+    color = vec4(lightingResult + diffuse, 1.0) * texture(uTexture, vTextureCoords);
 }

@@ -1,5 +1,7 @@
 #include "Chunk.h"
 
+#include <cstdlib>
+
 #include "Render/Vertex.h"
 
 static int GetBlockArrayIndex(int x, int y, int z) {
@@ -26,34 +28,47 @@ static bool IsBlockInBounds(const glm::vec3& position) {
 }
 
 void Chunk::CreateChunk() {
-    for(uint32_t i = 0; i < m_Blocks.size(); i++) {
-        glm::vec3 blockPosition = GetBlockPosition(i);
 
-        if(blockPosition.y < CHUNK_SIZE - 1)
-            m_Blocks[i] = &BLOCK_DIRT;
-        else 
-            m_Blocks[i] = &BLOCK_GRASS;
+    // Set all the blocks in a chunk to air blocks
+    for(auto& block : m_Blocks) {
+        block = &Block::AIR;
+    }
+
+    // Calculate for each block
+    for(uint32_t x = 0; x < CHUNK_SIZE; x++) {
+        for(uint32_t z = 0; z < CHUNK_SIZE; z++) {
+
+            int height = rand() % 6;
+            int startHeight = (CHUNK_SIZE - 1) - height;
+
+            m_Blocks[GetBlockArrayIndex(x, startHeight, z)] = &Block::GRASS;
+
+            for(uint32_t y = startHeight - 1; y > 0; y--) {
+                m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::DIRT;
+            }
+
+        }
     }
 
     UpdateChunkMesh();
 }
 
 void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
-                    const glm::vec2& texturePosition, bool shouldInvert) {
+                    const glm::vec3& normal, const glm::vec2& texturePosition, bool shouldInvert) {
     
-    static const float sheetID = GetBlockSpritesheet().GetTextureID();
+    static const float sheetID = Block::GetBlockSpritesheet().GetTextureID();
 
-    static const int sheetWidth  = GetBlockSpritesheet().GetWidth()  ;
-    static const int sheetHeight = GetBlockSpritesheet().GetHeight() ;
+    static const int sheetWidth  = Block::GetBlockSpritesheet().GetWidth()  ;
+    static const int sheetHeight = Block::GetBlockSpritesheet().GetHeight() ;
 
-    static const float textureCoordDifference = (float) SpriteSheetSize / (float) sheetWidth;
+    static const float textureCoordDifference = (float) Block::SpriteSheetSize / (float) sheetWidth;
 
     glm::vec2 textureCoords = texturePosition * textureCoordDifference;
 
-    vertices->push_back({ first, { 0.0f, 0.0f, 1.0f }, { textureCoords.x, textureCoords.y + textureCoordDifference }, sheetID });
-    vertices->push_back({ second, { 0.0f, 0.0f, 1.0f }, textureCoords, sheetID });
-    vertices->push_back({ third, { 0.0f, 0.0f, 1.0f }, { textureCoords.x + textureCoordDifference, textureCoords.y }, sheetID });
-    vertices->push_back({ fourth, { 0.0f, 0.0f, 1.0f }, { textureCoords.x + textureCoordDifference, textureCoords.y + textureCoordDifference }, sheetID });
+    vertices->push_back({ first, normal, { textureCoords.x, textureCoords.y + textureCoordDifference } });
+    vertices->push_back({ second, normal, textureCoords });
+    vertices->push_back({ third, normal, { textureCoords.x + textureCoordDifference, textureCoords.y } });
+    vertices->push_back({ fourth, normal, { textureCoords.x + textureCoordDifference, textureCoords.y + textureCoordDifference } });
 
     uint32_t startingValue = indices->size() > 0 ? ((indices->back()) + 1) : 0;
 
@@ -81,7 +96,7 @@ void Chunk::UpdateChunkMesh() {
 
     for(uint32_t i = 0; i < m_Blocks.size(); i++) {
 
-        if(m_Blocks[i] == &BLOCK_AIR)
+        if(m_Blocks[i] == nullptr || m_Blocks[i] == &Block::AIR)
             continue;
 
         auto blockPosition = GetBlockPosition(i);
@@ -102,6 +117,7 @@ void Chunk::UpdateChunkMesh() {
                 { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
+                { 0.0f, 0.0f, -1.0f },
                 m_Blocks[i]->SidesTexturePosition,
                 false
             );
@@ -114,6 +130,7 @@ void Chunk::UpdateChunkMesh() {
                 { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
+                { 0.0f, 0.0f, 1.0f },
                 m_Blocks[i]->SidesTexturePosition,
                 true
             );
@@ -126,6 +143,7 @@ void Chunk::UpdateChunkMesh() {
                 { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
+                { 1.0f, 0.0f, 0.0f },
                 m_Blocks[i]->SidesTexturePosition,
                 false
             );
@@ -138,6 +156,7 @@ void Chunk::UpdateChunkMesh() {
                 { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
                 { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
+                { -1.0f, 0.0f, 0.0f },
                 m_Blocks[i]->SidesTexturePosition,
                 true
             );
@@ -150,6 +169,7 @@ void Chunk::UpdateChunkMesh() {
                 { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
+                { 0.0f, 1.0f, 0.0f },
                 m_Blocks[i]->TopTexturePosition,
                 true
             );
@@ -162,6 +182,7 @@ void Chunk::UpdateChunkMesh() {
                 { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
                 { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
+                { 0.0f, -1.0f, 0.0f },
                 m_Blocks[i]->BottomTexturePosition,
                 false
             );

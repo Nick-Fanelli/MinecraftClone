@@ -11,7 +11,7 @@ static Chunk s_Chunk;
 
 void PlayState::OnCreate() {
 
-    InitializeBlockTextures();
+    Block::InitializeBlockTextures();
 
     s_MeshRenderer.Create();
 
@@ -25,10 +25,10 @@ void PlayState::OnUpdate(float deltaTime) {
 
     Camera::Update(deltaTime);
 
-    s_MeshRenderer.Submit(s_Chunk.GetMesh(), GetBlockSpritesheet());
+    s_MeshRenderer.Submit(s_Chunk.GetMesh(), Block::GetBlockSpritesheet());
 
 }
 
 void PlayState::OnDestroy() {
-    DestroyBlockTextures();
+    Block::DestroyBlockTextures();
 }
