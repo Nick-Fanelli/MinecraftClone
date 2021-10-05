@@ -54,7 +54,6 @@ void MeshRenderer::Submit(const Mesh& mesh, const Texture& texture) {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
-    // glEnableVertexAttribArray(3);
 
     glBindBuffer(GL_ARRAY_BUFFER, mesh.m_VboID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.m_EboID);
@@ -67,7 +66,6 @@ void MeshRenderer::Submit(const Mesh& mesh, const Texture& texture) {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
-    // glDisableVertexAttribArray(3);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 

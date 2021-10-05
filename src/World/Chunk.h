@@ -19,7 +19,7 @@ public:
 
 public:
 
-    static constexpr int CHUNK_SIZE = 16;
+    static constexpr int CHUNK_SIZE = 32;
     static constexpr int CHUNK_AREA = CHUNK_SIZE * CHUNK_SIZE;
     static constexpr int CHUNK_VOLUME = CHUNK_AREA * CHUNK_SIZE;
 

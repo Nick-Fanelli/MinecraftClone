@@ -6,6 +6,7 @@ class Shader {
 
 public:
     Shader() = default;
+    Shader(const Shader&) = default;
 
     Shader(const std::filesystem::path& vertexFilepath, const std::filesystem::path& fragmentFilepath);
 

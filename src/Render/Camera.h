@@ -11,7 +11,10 @@ class Camera {
 public: 
 
     static inline void SetAspectRatio(float aspectRatio) { s_AspectRatio = aspectRatio; UpdateProjectionMatrix(); }
+
     static inline const glm::mat4& GetViewProjection() { return s_ViewProjectionMatrix; }
+    static inline const glm::mat4& GetProjectionMatrix() { return s_ProjectionMatrix; }
+    static inline const glm::mat4& GetViewMatrix() { return s_ViewMatrix; }
 
     static inline void SetPosition(const glm::vec3& position) { s_Position = position; UpdateViewMatrix(); }
     static inline void Move(const glm::vec3& deltaPosition) { s_Position += deltaPosition; UpdateViewMatrix(); }
