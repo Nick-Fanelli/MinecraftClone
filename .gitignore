@@ -1,6 +1,13 @@
 # MacOS
 .DS_Store
 
+# Windows Build Files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.vs/
+
 # C++ Build
 Makefile
 *.make
