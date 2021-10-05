@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
 void Mesh::Create(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) {
+
     if(m_VaoID != -1) {
         glBindBuffer(GL_ARRAY_BUFFER, m_VboID);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), &vertices[0], GL_STATIC_DRAW);

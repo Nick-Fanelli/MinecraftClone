@@ -38,13 +38,16 @@ void Chunk::CreateChunk() {
     for(uint32_t x = 0; x < CHUNK_SIZE; x++) {
         for(uint32_t z = 0; z < CHUNK_SIZE; z++) {
 
-            int height = rand() % 6;
+            int height = rand() % 4;
             int startHeight = (CHUNK_SIZE - 1) - height;
 
             m_Blocks[GetBlockArrayIndex(x, startHeight, z)] = &Block::GRASS;
 
             for(uint32_t y = startHeight - 1; y > 0; y--) {
-                m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::DIRT;
+                if(y > 9)
+                    m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::DIRT;
+                else 
+                    m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::STONE;
             }
 
         }
