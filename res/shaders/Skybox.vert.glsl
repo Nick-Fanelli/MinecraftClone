@@ -8,6 +8,6 @@ uniform mat4 uViewProjection;
 
 void main() {
     vTextureCoords = aPosition;
-    vec4 pos = vec4(aPosition, 1.0);
+    vec4 pos = uViewProjection * vec4(aPosition, 1.0);
     gl_Position = pos.xyww;
 }

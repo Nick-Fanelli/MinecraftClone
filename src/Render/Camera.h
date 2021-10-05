@@ -16,6 +16,16 @@ public:
     static inline const glm::mat4& GetProjectionMatrix() { return s_ProjectionMatrix; }
     static inline const glm::mat4& GetViewMatrix() { return s_ViewMatrix; }
 
+    static inline glm::mat4 GetRotatedViewMatrix() {
+        glm::vec3 front;
+        front.x = cos(glm::radians(s_Rotation.x)) * cos(glm::radians(s_Rotation.y));
+        front.y = sin(glm::radians(s_Rotation.y));
+        front.z = sin(glm::radians(s_Rotation.x)) * cos(glm::radians(s_Rotation.y));
+        s_Front = glm::normalize(front);
+
+        return s_ProjectionMatrix * glm::lookAt({ 0.0f, 0.0f, 0.0f }, s_Front, s_Up);
+    }
+
     static inline void SetPosition(const glm::vec3& position) { s_Position = position; UpdateViewMatrix(); }
     static inline void Move(const glm::vec3& deltaPosition) { s_Position += deltaPosition; UpdateViewMatrix(); }
 

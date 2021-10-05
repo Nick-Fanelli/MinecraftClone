@@ -69,7 +69,10 @@ void Display::StartGameLoop() {
         if(deltaTime >= 0) {
             GameStateManager::OnUpdate(deltaTime);
 
-            // TODO: Update Input
+            // Check to see if escpae is pressed
+            if (glfwGetKey(s_WindowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+                glfwSetWindowShouldClose(s_WindowPtr, GLFW_TRUE);
+            }
         }
 
         glfwSwapBuffers(s_WindowPtr);

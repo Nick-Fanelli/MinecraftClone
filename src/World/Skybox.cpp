@@ -106,7 +106,7 @@ void Skybox::Render() {
     glDepthFunc(GL_LEQUAL);
 
     s_SkyboxShader.Bind();
-    s_SkyboxShader.AddUniformMat4("uViewProjection", Camera::GetViewProjection());
+    s_SkyboxShader.AddUniformMat4("uViewProjection", Camera::GetRotatedViewMatrix());
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
 
