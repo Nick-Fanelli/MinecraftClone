@@ -5,6 +5,7 @@ layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTexutreCoords;
 
 uniform mat4 uViewProjection;
+uniform vec3 uTransformation;
 
 out vec3 vPosition;
 out vec3 vNormal;
@@ -16,5 +17,5 @@ void main() {
     vNormal = aNormal;
     vTextureCoords = aTexutreCoords;
 
-    gl_Position = uViewProjection * vec4(aPosition, 1.0);
+    gl_Position = uViewProjection * vec4(aPosition + uTransformation, 1.0);
 }

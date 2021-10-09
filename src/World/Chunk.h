@@ -12,8 +12,11 @@ public:
 
     Chunk() = default;
 
-    void CreateChunk();
+    void CreateChunk(int chunkX, int chunkY, int chunkZ);
     void UpdateChunkMesh();
+
+public:
+    const glm::vec3& GetChunkPosition() const { return m_ChunkPosition; }
 
     const Mesh& GetMesh() const { return m_Mesh; }
 
@@ -28,6 +31,8 @@ private:
                  const glm::vec3& normal, const glm::vec2& texturePosition, bool shouldInvert);
 
 private:
+    glm::vec3 m_ChunkPosition;
+
     std::array<Block::Block*, CHUNK_VOLUME> m_Blocks;
     Mesh m_Mesh;
 

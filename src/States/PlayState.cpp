@@ -6,22 +6,28 @@
 
 #include "World/Chunk.h"
 #include "World/Skybox.h"
-
-static MeshRenderer s_MeshRenderer;
-static Chunk s_Chunk;
+#include "World/ChunkManager.h"
 
 static Skybox s_Skybox;
+static ChunkManager s_ChunkManager;
 
 void PlayState::OnCreate() {
 
     Block::InitializeBlockTextures();
+    MeshRenderer::OnInitialize();
 
-    s_MeshRenderer.Create();
     s_Skybox.Create();
 
-    s_Chunk.CreateChunk();
-
     Camera::SetPosition({ 0.0f, 32.0f, 3.0f});
+
+    // s_ChunkManager.CreateChunk(0, 0, 0);
+    // s_ChunkManager.CreateChunk(0, 1, 0);
+
+    for(int x = 0; x < 10; x++) {
+        for(int y = 0; y < 10; y++) {
+            s_ChunkManager.CreateChunk(x, 0.0f, y);
+        }
+    }
 
 }
 
@@ -29,9 +35,8 @@ void PlayState::OnUpdate(float deltaTime) {
 
     Camera::Update(deltaTime);
 
-    s_MeshRenderer.Submit(s_Chunk.GetMesh(), Block::GetBlockSpritesheet());
+    s_ChunkManager.RenderChunks(Block::GetBlockSpritesheet());
 
-    // Last
     s_Skybox.Render();
 }
 

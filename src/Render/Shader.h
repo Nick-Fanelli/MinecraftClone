@@ -16,6 +16,7 @@ public:
     void Bind() const;
 
     void AddUniformMat4(const char* varName, const glm::mat4& mat4) const;
+    void AddUniformVec3(const char* varName, const glm::vec3& vec) const;
 
     static void Unbind();
 

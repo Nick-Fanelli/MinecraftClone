@@ -1,9 +1,9 @@
 #version 410 core
 
-const float ambientStrength = 0.5;
+const float ambientStrength = 0.75;
 const vec3 ambient = vec3(ambientStrength);
 
-const vec3 lightPosition = vec3(0, 40, 15);
+const vec3 lightPosition = vec3(255, 255, 255);
 
 in vec3 vPosition;
 in vec3 vNormal;

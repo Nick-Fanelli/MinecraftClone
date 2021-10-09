@@ -27,31 +27,41 @@ static bool IsBlockInBounds(const glm::vec3& position) {
            position.x < Chunk::CHUNK_SIZE && position.y < Chunk::CHUNK_SIZE && position.z < Chunk::CHUNK_SIZE;
 }
 
-void Chunk::CreateChunk() {
+void Chunk::CreateChunk(int chunkX, int chunkY, int chunkZ) {
+    
+    m_ChunkPosition = { chunkX, chunkY, chunkZ };
 
     // Set all the blocks in a chunk to air blocks
     for(auto& block : m_Blocks) {
         block = &Block::AIR;
     }
 
-    // Calculate for each block
-    for(uint32_t x = 0; x < CHUNK_SIZE; x++) {
-        for(uint32_t z = 0; z < CHUNK_SIZE; z++) {
-
-            int height = rand() % 4;
-            int startHeight = (CHUNK_SIZE - 1) - height;
-
-            m_Blocks[GetBlockArrayIndex(x, startHeight, z)] = &Block::GRASS;
-
-            for(uint32_t y = startHeight - 1; y > 0; y--) {
-                if(y > 9)
-                    m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::DIRT;
-                else 
-                    m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::STONE;
-            }
-
-        }
+    for(uint32_t i = 0; i < m_Blocks.size(); i++) {
+        auto position = GetBlockPosition(i);
+        if(position.y < CHUNK_SIZE - 1)
+            m_Blocks[i] = &Block::DIRT;
+        else
+            m_Blocks[i] = &Block::GRASS;
     }
+
+    // Calculate for each block
+    // for(uint32_t x = 0; x < CHUNK_SIZE; x++) {
+    //     for(uint32_t z = 0; z < CHUNK_SIZE; z++) {
+
+    //         int height = 0;
+    //         int startHeight = (CHUNK_SIZE - 1) - height;
+
+    //         m_Blocks[GetBlockArrayIndex(x, startHeight, z)] = &Block::GRASS;
+
+    //         for(uint32_t y = startHeight - 1; y > 0; y--) {
+    //             if(y > 9)
+    //                 m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::DIRT;
+    //             else 
+    //                 m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::STONE;
+    //         }
+
+    //     }
+    // }
 
     UpdateChunkMesh();
 }
@@ -59,6 +69,8 @@ void Chunk::CreateChunk() {
 void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
                     const glm::vec3& normal, const glm::vec2& texturePosition, bool shouldInvert) {
     
+    // std::cout << Block::GetBlockSpritesheet().GetTextureID() << std::endl;
+
     static const float sheetID = Block::GetBlockSpritesheet().GetTextureID();
 
     static const int sheetWidth  = Block::GetBlockSpritesheet().GetWidth()  ;

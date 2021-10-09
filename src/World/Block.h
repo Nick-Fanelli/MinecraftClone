@@ -30,11 +30,10 @@ namespace Block {
     inline Block DIRT = { true, { 2, 0 } };
     inline Block STONE = { true, { 1, 0 } };
 
-    static Texture s_BlockSpritesheet;
+    static inline Texture s_BlockSpritesheet = { "res/images/texture-atlas.png" };
     static constexpr int SpriteSheetSize = 16;
 
     inline void InitializeBlockTextures() {
-        s_BlockSpritesheet = { "res/images/texture-atlas.png" };
         s_BlockSpritesheet.Create();
     }
 
@@ -42,5 +41,7 @@ namespace Block {
         s_BlockSpritesheet.Destroy();
     }
 
-    inline const Texture& GetBlockSpritesheet() { return s_BlockSpritesheet; }
+    inline const Texture& GetBlockSpritesheet() { 
+        return s_BlockSpritesheet; 
+    }
 }

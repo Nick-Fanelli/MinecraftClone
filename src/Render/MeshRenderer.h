@@ -8,12 +8,13 @@ class MeshRenderer {
 
 public:
 
-    MeshRenderer();
+    MeshRenderer() = delete;
 
-    void Create();
+    static void OnInitialize();
 
-    void Submit(const Mesh& mesh);
-    void Submit(const Mesh& mesh, const Texture& texture);
+    static void Submit(const Mesh& mesh);
+    static void Submit(const Mesh& mesh, const Texture& texture);
+    static void Submit(const Mesh& mesh, const glm::vec3& transformation, const Texture& texture);
 
 private:
     static inline Shader s_Shader{ "res/shaders/Shader.vert.glsl", "res/shaders/Shader.frag.glsl" };

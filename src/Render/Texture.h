@@ -20,6 +20,7 @@ public:
     int GetWidth() const { return m_Width; }
     int GetHeight() const { return m_Height; }
 
+    const std::filesystem::path& GetFilepath() { return m_Filepath; }
     GLuint GetTextureID() const { return m_TextureID; }
 
     ~Texture() { Destroy(); }
@@ -29,5 +30,4 @@ private:
 
     GLuint m_TextureID = -1;
     int m_Width, m_Height;
-
 };
