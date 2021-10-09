@@ -20,9 +20,6 @@ void PlayState::OnCreate() {
 
     Camera::SetPosition({ 0.0f, 32.0f, 3.0f});
 
-    // s_ChunkManager.CreateChunk(0, 0, 0);
-    // s_ChunkManager.CreateChunk(0, 1, 0);
-
     for(int x = 0; x < 10; x++) {
         for(int y = 0; y < 10; y++) {
             s_ChunkManager.CreateChunk(x, 0.0f, y);

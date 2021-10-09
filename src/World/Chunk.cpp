@@ -3,6 +3,9 @@
 #include <cstdlib>
 
 #include "Render/Vertex.h"
+#include "World/Generation/WorldGeneration.h"
+
+static FlatWorldGenerator s_WorldGenerator;
 
 static int GetBlockArrayIndex(int x, int y, int z) {
     return (z * Chunk::CHUNK_AREA) + (y * Chunk::CHUNK_SIZE) + x;
@@ -32,16 +35,19 @@ void Chunk::CreateChunk(int chunkX, int chunkY, int chunkZ) {
     m_ChunkPosition = { chunkX, chunkY, chunkZ };
 
     // Set all the blocks in a chunk to air blocks
-    for(auto& block : m_Blocks) {
-        block = &Block::AIR;
-    }
+    // for(auto& block : m_Blocks) {
+    //     block = &Block::AIR;
+    // }
 
     for(uint32_t i = 0; i < m_Blocks.size(); i++) {
         auto position = GetBlockPosition(i);
-        if(position.y < CHUNK_SIZE - 1)
-            m_Blocks[i] = &Block::DIRT;
-        else
-            m_Blocks[i] = &Block::GRASS;
+
+        m_Blocks[i] = s_WorldGenerator.GetBlock(position);
+
+        // if(position.y < CHUNK_SIZE - 1)
+        //     m_Blocks[i] = &Block::DIRT;
+        // else
+        //     m_Blocks[i] = &Block::GRASS;
     }
 
     // Calculate for each block
