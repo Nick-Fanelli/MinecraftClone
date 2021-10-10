@@ -1,6 +1,6 @@
 #include "Chunk.h"
 
-#include <cstdlib>
+#include "NeighborData.h"
 
 #include "Render/Vertex.h"
 #include "World/Generation/WorldGeneration.h"
@@ -96,91 +96,36 @@ void Chunk::UpdateChunkMesh() {
 
         auto blockPosition = GetBlockPosition(i);
 
-        glm::vec3 backNeighbor = { blockPosition.x, blockPosition.y, blockPosition.z - 1.0f };
-        glm::vec3 frontNeighbor = { blockPosition.x, blockPosition.y, blockPosition.z + 1.0f };
+        for(auto& data : NeighborData::Data) {
 
-        glm::vec3 rightNeighbor = { blockPosition.x + 1.0f, blockPosition.y, blockPosition.z };
-        glm::vec3 leftNeighbor = { blockPosition.x - 1.0f, blockPosition.y, blockPosition.z };
+            auto neighborPosition = data.RelativePosition + blockPosition;
 
-        glm::vec3 topNeighbor = { blockPosition.x, blockPosition.y + 1.0f, blockPosition.z };
-        glm::vec3 bottomNeighbor = { blockPosition.x, blockPosition.y - 1.0f, blockPosition.z };
+            if(!IsBlockInBounds(neighborPosition) || !m_Blocks[GetBlockArrayIndex(neighborPosition)]->IsSolid) {
 
-        // Back Face
-        if(!IsBlockInBounds(backNeighbor) || !m_Blocks[GetBlockArrayIndex(backNeighbor)]->IsSolid) {
-            AddFace(&vertices, &indices, 
-                { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
-                { 0.0f, 0.0f, -1.0f },
-                m_Blocks[i]->SidesTexturePosition,
-                false
-            );
-        }
+                glm::vec2 textureCoords;
 
-        // Front Face
-        if(!IsBlockInBounds(frontNeighbor) || !m_Blocks[GetBlockArrayIndex(frontNeighbor)]->IsSolid) {
-            AddFace(&vertices, &indices, 
-                { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
-                { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
-                { 0.0f, 0.0f, 1.0f },
-                m_Blocks[i]->SidesTexturePosition,
-                true
-            );
-        }
+                switch(data.TextureSide) {
+                case NeighborData::NeighborData::TextureSideTop:
+                    textureCoords = m_Blocks[i]->TopTexturePosition;
+                    break;
+                case NeighborData::NeighborData::TextureSideBottom:
+                    textureCoords = m_Blocks[i]->BottomTexturePosition;
+                    break;
+                default: // Also TextureSideSide
+                    textureCoords = m_Blocks[i]->SidesTexturePosition;
+                    break;
+                }
 
-        // Right Face
-        if(!IsBlockInBounds(rightNeighbor) || !m_Blocks[GetBlockArrayIndex(rightNeighbor)]->IsSolid) {
-            AddFace(&vertices, &indices,
-                { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
-                { 1.0f, 0.0f, 0.0f },
-                m_Blocks[i]->SidesTexturePosition,
-                false
-            );
-        }
-
-        // Left Face
-        if(!IsBlockInBounds(leftNeighbor) || !m_Blocks[GetBlockArrayIndex(leftNeighbor)]->IsSolid) {
-            AddFace(&vertices, &indices,
-                { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
-                { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
-                { -1.0f, 0.0f, 0.0f },
-                m_Blocks[i]->SidesTexturePosition,
-                true
-            );
-        }
-
-        // Top Face
-        if(!IsBlockInBounds(topNeighbor) || !m_Blocks[GetBlockArrayIndex(topNeighbor)]->IsSolid) {
-            AddFace(&vertices, &indices,
-                { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
-                { blockPosition.x - 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y + 0.5f, blockPosition.z + 0.5f },
-                { 0.0f, 1.0f, 0.0f },
-                m_Blocks[i]->TopTexturePosition,
-                true
-            );
-        }
-        
-        // Bottom Face
-        if(!IsBlockInBounds(bottomNeighbor) || !m_Blocks[GetBlockArrayIndex(bottomNeighbor)]->IsSolid) {
-            AddFace(&vertices, &indices,
-                { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
-                { blockPosition.x - 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z - 0.5f },
-                { blockPosition.x + 0.5f, blockPosition.y - 0.5f, blockPosition.z + 0.5f },
-                { 0.0f, -1.0f, 0.0f },
-                m_Blocks[i]->BottomTexturePosition,
-                false
-            );
+                AddFace(&vertices, &indices,
+                    data.RelativeFacePosition[0] + blockPosition,
+                    data.RelativeFacePosition[1] + blockPosition,
+                    data.RelativeFacePosition[2] + blockPosition,
+                    data.RelativeFacePosition[3] + blockPosition,
+                    data.Normal,
+                    textureCoords,
+                    data.ShouldInvert
+                );
+            }
         }
 
     }
