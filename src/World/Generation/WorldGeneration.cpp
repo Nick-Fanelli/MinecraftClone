@@ -21,7 +21,7 @@ Block::Block* FlatWorldGenerator::GetBlock(const glm::vec3& position) {
 
 static FastNoiseLite s_Noise;
 
-static constexpr float s_Magnitude = 8.0f;
+static constexpr float s_Magnitude = 10.0f;
 static constexpr int s_HeightDifference = 80;
 
 // Perlin Noise World Generator
@@ -32,10 +32,10 @@ Block::Block* PerlinNoiseWorldGenerator::GetBlock(const glm::vec3& position) {
     if(!noiseInitialized) {
         srand(time(nullptr));
 
-        s_Noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+        s_Noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
         s_Noise.SetSeed(rand());
         s_Noise.SetFractalType(FastNoiseLite::FractalType_PingPong);
-        s_Noise.SetFractalPingPongStrength(1.0f);
+        s_Noise.SetFractalPingPongStrength(1.25f);
 
         noiseInitialized = true;
     }
