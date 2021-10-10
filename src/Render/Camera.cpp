@@ -4,7 +4,7 @@
 #include <glm/gtx/quaternion.hpp>
 
 // 2.5f default
-static float s_PlayerSpeed = 10.5f;
+static float s_PlayerSpeed = 10.92f * 2.0f;
 
 void Camera::Update(float deltaTime) {
     static GLFWwindow* windowPtr = Display::GetWindowPtr();

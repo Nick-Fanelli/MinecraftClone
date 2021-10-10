@@ -53,6 +53,6 @@ private:
     static inline float s_AspectRatio = 1.0f;
 
     static inline float s_ZNear = 0.1f;
-    static inline float s_ZFar = 100.0f;
+    static inline float s_ZFar = 1000.0f;
 
 };

@@ -5,7 +5,7 @@
 #include "Render/Vertex.h"
 #include "World/Generation/WorldGeneration.h"
 
-static FlatWorldGenerator s_WorldGenerator;
+static PerlinNoiseWorldGenerator s_WorldGenerator;
 
 static int GetBlockArrayIndex(const glm::vec3& position) {
 
@@ -25,17 +25,12 @@ static glm::vec3 GetBlockPosition(int index) {
 
 static bool IsBlockInBounds(const glm::vec3& position) {
     return position.x >= 0 && position.y >= 0 && position.z >= 0 && 
-           position.x < Chunk::CHUNK_SIZE && position.y < Chunk::CHUNK_SIZE && position.z < Chunk::CHUNK_SIZE;
+           position.x < Chunk::CHUNK_SIZE && position.y < Chunk::CHUNK_HEIGHT && position.z < Chunk::CHUNK_SIZE;
 }
 
 void Chunk::CreateChunk(int chunkX, int chunkZ) {
     
     m_ChunkPosition = { chunkX, 0.0f, chunkZ };
-
-    // Set all the blocks in a chunk to air blocks
-    // for(auto& block : m_Blocks) {
-    //     block = &Block::GRASS;
-    // }
 
     for(uint32_t i = 0; i < m_Blocks.size(); i++) {
         auto position = GetBlockPosition(i);
@@ -100,7 +95,12 @@ void Chunk::UpdateChunkMesh() {
 
             auto neighborPosition = data.RelativePosition + blockPosition;
 
-            bool shouldDrawFace = !IsBlockInBounds(neighborPosition) || !m_Blocks[GetBlockArrayIndex(neighborPosition)]->IsSolid;
+            bool shouldDrawFace = false;
+
+            if(!IsBlockInBounds(neighborPosition))
+                shouldDrawFace = !s_WorldGenerator.GetBlock(neighborPosition + (m_ChunkPosition * (float) CHUNK_SIZE))->IsSolid;
+            else if(!m_Blocks[GetBlockArrayIndex(neighborPosition)]->IsSolid)
+                shouldDrawFace = true;
 
             // Draw the face
             if(shouldDrawFace) {

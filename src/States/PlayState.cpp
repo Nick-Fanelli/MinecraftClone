@@ -1,5 +1,7 @@
 #include "PlayState.h"
 
+#include <FastNoiseLite.h>
+
 #include "Render/MeshRenderer.h"
 #include "Render/Camera.h"
 #include "Render/Texture.h"
@@ -20,11 +22,11 @@ void PlayState::OnCreate() {
 
     s_Skybox.Create();
 
-    Camera::SetPosition({ 0.0f, 32.0f, 3.0f});
+    Camera::SetPosition({ 0.0f, 215.0f, 3.0f});
 
     // s_ChunkManager.CreateChunk(0, 0, 0);
 
-    uint32_t worldSize = 2;
+    uint32_t worldSize = 10;
 
     for(int x = 0; x < worldSize; x++) {
         for(int z = 0; z < worldSize; z++) {
