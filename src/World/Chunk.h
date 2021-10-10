@@ -12,7 +12,7 @@ public:
 
     Chunk() = default;
 
-    void CreateChunk(int chunkX, int chunkY, int chunkZ);
+    void CreateChunk(int chunkX, int chunkZ);
     void UpdateChunkMesh();
 
 public:
@@ -22,9 +22,10 @@ public:
 
 public:
 
-    static constexpr int CHUNK_SIZE = 32;
+    static constexpr int CHUNK_SIZE = 16;
+    static constexpr int CHUNK_HEIGHT = 256;
     static constexpr int CHUNK_AREA = CHUNK_SIZE * CHUNK_SIZE;
-    static constexpr int CHUNK_VOLUME = CHUNK_AREA * CHUNK_SIZE;
+    static constexpr int CHUNK_VOLUME = CHUNK_AREA * CHUNK_HEIGHT;
 
 private:
     void AddFace(std::vector<Vertex>* vertex, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,

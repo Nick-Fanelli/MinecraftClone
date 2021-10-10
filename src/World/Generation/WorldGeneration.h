@@ -11,10 +11,19 @@ public:
 
 };
 
+// Flat World Generator
 class FlatWorldGenerator : public WorldGenerator {
 
 public:
 
-    virtual Block::Block* GetBlock(const glm::vec3& position);
+    Block::Block* GetBlock(const glm::vec3& position) override;
+
+};
+
+// Perlin Noise World Generator
+class PerlinNoiseWorldGenerator : public WorldGenerator {
+
+public: 
+    Block::Block* GetBlock(const glm::vec3& position) override;
 
 };

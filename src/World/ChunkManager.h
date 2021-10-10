@@ -10,7 +10,7 @@ public:
     ChunkManager() = default;
     ChunkManager(const ChunkManager&) = delete;
 
-    void CreateChunk(int chunkX, int chunkY, int chunkZ);
+    void CreateChunk(int chunkX, int chunkZ);
     
     void RenderChunks(const Texture& spritesheet);
 

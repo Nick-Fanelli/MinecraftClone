@@ -7,19 +7,17 @@
 
 static FlatWorldGenerator s_WorldGenerator;
 
-static int GetBlockArrayIndex(int x, int y, int z) {
-    return (z * Chunk::CHUNK_AREA) + (y * Chunk::CHUNK_SIZE) + x;
-}
-
 static int GetBlockArrayIndex(const glm::vec3& position) {
-    return (position.z * Chunk::CHUNK_AREA) + (position.y * Chunk::CHUNK_SIZE) + position.x;
+
+    return (position.y * Chunk::CHUNK_AREA) + (position.z * Chunk::CHUNK_SIZE) + position.x;
 }
 
 static glm::vec3 GetBlockPosition(int index) {
-    const int z = index / (Chunk::CHUNK_AREA);
-    index -= (z * Chunk::CHUNK_AREA);
 
-    const int y = index / Chunk::CHUNK_SIZE;
+    const int y = index / (Chunk::CHUNK_AREA);
+    index -= (y * Chunk::CHUNK_AREA);
+
+    const int z = index / Chunk::CHUNK_SIZE;
     const int x = index % Chunk::CHUNK_SIZE;
 
     return { x, y, z };
@@ -30,44 +28,20 @@ static bool IsBlockInBounds(const glm::vec3& position) {
            position.x < Chunk::CHUNK_SIZE && position.y < Chunk::CHUNK_SIZE && position.z < Chunk::CHUNK_SIZE;
 }
 
-void Chunk::CreateChunk(int chunkX, int chunkY, int chunkZ) {
+void Chunk::CreateChunk(int chunkX, int chunkZ) {
     
-    m_ChunkPosition = { chunkX, chunkY, chunkZ };
+    m_ChunkPosition = { chunkX, 0.0f, chunkZ };
 
     // Set all the blocks in a chunk to air blocks
     // for(auto& block : m_Blocks) {
-    //     block = &Block::AIR;
+    //     block = &Block::GRASS;
     // }
 
     for(uint32_t i = 0; i < m_Blocks.size(); i++) {
         auto position = GetBlockPosition(i);
 
-        m_Blocks[i] = s_WorldGenerator.GetBlock(position);
-
-        // if(position.y < CHUNK_SIZE - 1)
-        //     m_Blocks[i] = &Block::DIRT;
-        // else
-        //     m_Blocks[i] = &Block::GRASS;
+        m_Blocks[i] = s_WorldGenerator.GetBlock(position + (m_ChunkPosition * (float) CHUNK_SIZE));
     }
-
-    // Calculate for each block
-    // for(uint32_t x = 0; x < CHUNK_SIZE; x++) {
-    //     for(uint32_t z = 0; z < CHUNK_SIZE; z++) {
-
-    //         int height = 0;
-    //         int startHeight = (CHUNK_SIZE - 1) - height;
-
-    //         m_Blocks[GetBlockArrayIndex(x, startHeight, z)] = &Block::GRASS;
-
-    //         for(uint32_t y = startHeight - 1; y > 0; y--) {
-    //             if(y > 9)
-    //                 m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::DIRT;
-    //             else 
-    //                 m_Blocks[GetBlockArrayIndex(x, y, z)] = &Block::STONE;
-    //         }
-
-    //     }
-    // }
 
     UpdateChunkMesh();
 }

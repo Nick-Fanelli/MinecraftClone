@@ -2,9 +2,9 @@
 
 #include "Render/MeshRenderer.h"
 
-void ChunkManager::CreateChunk(int chunkX, int chunkY, int chunkZ) {
+void ChunkManager::CreateChunk(int chunkX, int chunkZ) {
     auto chunkPtr = std::make_shared<Chunk>();
-    chunkPtr->CreateChunk(chunkX, chunkY, chunkZ);
+    chunkPtr->CreateChunk(chunkX, chunkZ);
 
     m_Chunks.push_back(chunkPtr);
 }
