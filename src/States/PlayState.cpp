@@ -11,7 +11,7 @@
 static Skybox s_Skybox;
 static ChunkManager s_ChunkManager;
 
-static bool s_Wireframe = true;
+static bool s_Wireframe = false;
 
 void PlayState::OnCreate() {
 

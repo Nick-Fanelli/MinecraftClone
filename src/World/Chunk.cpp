@@ -100,8 +100,10 @@ void Chunk::UpdateChunkMesh() {
 
             auto neighborPosition = data.RelativePosition + blockPosition;
 
-            if(!IsBlockInBounds(neighborPosition) || !m_Blocks[GetBlockArrayIndex(neighborPosition)]->IsSolid) {
+            bool shouldDrawFace = !IsBlockInBounds(neighborPosition) || !m_Blocks[GetBlockArrayIndex(neighborPosition)]->IsSolid;
 
+            // Draw the face
+            if(shouldDrawFace) {
                 glm::vec2 textureCoords;
 
                 switch(data.TextureSide) {
