@@ -26,10 +26,10 @@ namespace Block {
 
     inline Block AIR = { false };
 
-    inline Block GRASS = { true, { 0, 0 }, { 3, 0 }, { 2, 0 } };
+    inline Block GRASS = { true, { 0, 0 }, { 1, 0 }, { 2, 0 } };
     inline Block DIRT = { true, { 2, 0 } };
-    inline Block STONE = { true, { 1, 0 } };
-    inline Block BEDROCK = { true, { 1, 1 } };
+    inline Block STONE = { true, { 0, 1 } };
+    inline Block BEDROCK = { true, { 4, 1 } };
 
     static inline Texture s_BlockSpritesheet = { "res/images/blocks-texture-atlas.png" };
     static constexpr int SpriteSheetSize = 16;
