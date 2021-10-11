@@ -8,7 +8,7 @@ namespace NeighborData {
 
         glm::vec3 RelativePosition;
         glm::vec3 RelativeFacePosition[4];
-        glm::vec3 Normal;
+        float LightValue;
         bool ShouldInvert;
 
         enum TextureSide {
@@ -29,7 +29,7 @@ namespace NeighborData {
                 { +0.5f, +0.5f, -0.5f },
                 { +0.5f, -0.5f, -0.5f }
             },
-            { 0.0f, 0.0f, -1.0f },
+            0.75f,
             false,
             NeighborData::TextureSideSide
         },
@@ -43,7 +43,7 @@ namespace NeighborData {
                 { +0.5f, +0.5f, +0.5f },
                 { +0.5f, -0.5f, +0.5f }
             },
-            { 0.0f, 0.0f, 1.0f },
+            0.95,
             true,
             NeighborData::TextureSideSide
         },
@@ -57,7 +57,7 @@ namespace NeighborData {
                 { +0.5f, +0.5f, +0.5f },
                 { +0.5f, -0.5f, +0.5f }
             },
-            { 1.0f, 0.0f, 0.0f },
+            0.85f,
             false,
             NeighborData::TextureSideSide
         },
@@ -71,7 +71,7 @@ namespace NeighborData {
                 { -0.5f, +0.5f, +0.5f },
                 { -0.5f, -0.5f, +0.5f }
             },
-            { -1.0f, 0.0f, 0.0f },
+            0.75f,
             true,
             NeighborData::TextureSideSide
         },
@@ -85,7 +85,7 @@ namespace NeighborData {
                 { +0.5f, +0.5f, -0.5f },
                 { +0.5f, +0.5f, +0.5f }
             },
-            { 0.0f, 1.0f, 0.0f },
+            1.0f,
             true,
             NeighborData::TextureSideTop
         },
@@ -99,7 +99,7 @@ namespace NeighborData {
                 { +0.5f, -0.5f, -0.5f },
                 { +0.5f, -0.5f, +0.5f }
             },
-            { 0.0f, -1.0f, 0.0f },
+            0.6f,
             false,
             NeighborData::TextureSideBottom
         }

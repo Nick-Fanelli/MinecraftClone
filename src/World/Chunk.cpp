@@ -42,7 +42,7 @@ void Chunk::CreateChunk(int chunkX, int chunkZ) {
 }
 
 void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
-                    const glm::vec3& normal, const glm::vec2& texturePosition, bool shouldInvert) {
+                    float lightValue, const glm::vec2& texturePosition, bool shouldInvert) {
     
     // std::cout << Block::GetBlockSpritesheet().GetTextureID() << std::endl;
 
@@ -55,10 +55,10 @@ void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indice
 
     glm::vec2 textureCoords = texturePosition * textureCoordDifference;
 
-    vertices->push_back({ first, normal, { textureCoords.x, textureCoords.y + textureCoordDifference } });
-    vertices->push_back({ second, normal, textureCoords });
-    vertices->push_back({ third, normal, { textureCoords.x + textureCoordDifference, textureCoords.y } });
-    vertices->push_back({ fourth, normal, { textureCoords.x + textureCoordDifference, textureCoords.y + textureCoordDifference } });
+    vertices->push_back({ first, lightValue, { textureCoords.x, textureCoords.y + textureCoordDifference } });
+    vertices->push_back({ second, lightValue, textureCoords });
+    vertices->push_back({ third, lightValue, { textureCoords.x + textureCoordDifference, textureCoords.y } });
+    vertices->push_back({ fourth, lightValue, { textureCoords.x + textureCoordDifference, textureCoords.y + textureCoordDifference } });
 
     uint32_t startingValue = indices->size() > 0 ? ((indices->back()) + 1) : 0;
 
@@ -124,7 +124,7 @@ void Chunk::UpdateChunkMesh() {
                     data.RelativeFacePosition[1] + blockPosition,
                     data.RelativeFacePosition[2] + blockPosition,
                     data.RelativeFacePosition[3] + blockPosition,
-                    data.Normal,
+                    data.LightValue,
                     textureCoords,
                     data.ShouldInvert
                 );

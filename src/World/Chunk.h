@@ -29,7 +29,7 @@ public:
 
 private:
     void AddFace(std::vector<Vertex>* vertex, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
-                 const glm::vec3& normal, const glm::vec2& texturePosition, bool shouldInvert);
+                 float lightValue, const glm::vec2& texturePosition, bool shouldInvert);
 
 private:
     glm::vec3 m_ChunkPosition;
