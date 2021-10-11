@@ -3,7 +3,7 @@
 const float ambientStrength = 0.75;
 const vec3 ambient = vec3(ambientStrength);
 
-const vec3 lightPosition = vec3(255, 255, 255);
+const vec3 lightPosition = vec3(0, 255, 0);
 
 in vec3 vPosition;
 in vec3 vNormal;

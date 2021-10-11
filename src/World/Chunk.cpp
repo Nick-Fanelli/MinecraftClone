@@ -98,6 +98,7 @@ void Chunk::UpdateChunkMesh() {
             bool shouldDrawFace = false;
 
             if(!IsBlockInBounds(neighborPosition))
+                // shouldDrawFace = true;
                 shouldDrawFace = !s_WorldGenerator.GetBlock(neighborPosition + (m_ChunkPosition * (float) CHUNK_SIZE))->IsSolid;
             else if(!m_Blocks[GetBlockArrayIndex(neighborPosition)]->IsSolid)
                 shouldDrawFace = true;

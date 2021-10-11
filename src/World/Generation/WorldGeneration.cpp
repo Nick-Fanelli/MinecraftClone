@@ -21,8 +21,14 @@ Block::Block* FlatWorldGenerator::GetBlock(const glm::vec3& position) {
 
 static FastNoiseLite s_Noise;
 
-static constexpr float s_Magnitude = 10.0f;
+static FastNoiseLite s_CaveNoise;
+
+static constexpr float s_Magnitude = 40.0f;
+static constexpr float s_Threshold = 0.5f;
+
 static constexpr int s_HeightDifference = 80;
+static constexpr int s_DirtHeight = 5;
+static constexpr int s_WaterLevel = Chunk::CHUNK_HEIGHT - 10;
 
 // Perlin Noise World Generator
 Block::Block* PerlinNoiseWorldGenerator::GetBlock(const glm::vec3& position) {
@@ -37,15 +43,47 @@ Block::Block* PerlinNoiseWorldGenerator::GetBlock(const glm::vec3& position) {
         s_Noise.SetFractalType(FastNoiseLite::FractalType_PingPong);
         s_Noise.SetFractalPingPongStrength(1.25f);
 
+        s_CaveNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+        s_CaveNoise.SetSeed(rand());
+        s_CaveNoise.SetFrequency(0.03f);
+        // s_CaveNoise.SetFrequency(0.0001f);
+        // s_CaveNoise.SetDomainWarpType(FastNoiseLite::DomainWarpType_OpenSimplex2);
+        // s_CaveNoise.SetDomainWarpAmp(180.0f);
+        s_CaveNoise.SetFractalType(FastNoiseLite::FractalType_PingPong);
+        s_CaveNoise.SetFractalPingPongStrength(1.25f);
+
+        // s_CaveNoise.SetNoiseType(FastNoiseLite::NoiseType_Cellular);
+        // s_CaveNoise.SetFractalType(FastNoiseLite::FractalType_PingPong);
+        // // s_CaveNoise.SetFrequency(2.0f);
+        // s_CaveNoise.SetFractalPingPongStrength(2.5f);
+        // s_CaveNoise.SetSeed(rand());
+
         noiseInitialized = true;
     }
 
+    // Bedrock
+    if(position.y <= 1)
+        return &Block::BEDROCK;
+
     int topHeight = std::min(Chunk::CHUNK_HEIGHT - ((int) (s_Noise.GetNoise(position.x, position.z) * s_Magnitude)) - s_HeightDifference, Chunk::CHUNK_HEIGHT - 1);
+
+    // Cave
+    if(position.y < topHeight - 5) {
+        float caveNoise = abs(s_CaveNoise.GetNoise(position.x, position.y, position.z));
+        // std::cout << caveNoise << std::endl;
+        // caveNoise *= 2.0f;
+
+        if(caveNoise >= s_Threshold) 
+            return &Block::AIR;
+    }
 
     if(position.y == topHeight)
         return &Block::GRASS;
-    else if(position.y < topHeight)
+    else if(position.y < topHeight && position.y > topHeight - s_DirtHeight)
         return &Block::DIRT;
-    else
+    else if(position.y <= topHeight - s_DirtHeight)
+        return &Block::STONE;
+    else {
         return &Block::AIR;
+    }
 }
