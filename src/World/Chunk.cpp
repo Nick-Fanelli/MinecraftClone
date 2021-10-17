@@ -37,6 +37,8 @@ void Chunk::CreateChunk(int chunkX, int chunkZ) {
 
         m_Blocks[i] = s_WorldGenerator.GetBlock(position + (m_ChunkPosition * (float) CHUNK_SIZE));
     }
+
+    UpdateChunkMesh();
 }
 
 void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
@@ -76,10 +78,6 @@ void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indice
 }
 
 void Chunk::UpdateChunkMesh() {
-
-    std::vector<Vertex> vertices;
-    std::vector<uint32_t> indices;
-
     for(uint32_t i = 0; i < m_Blocks.size(); i++) {
 
         if(m_Blocks[i] == nullptr || m_Blocks[i] == &Block::AIR)
@@ -115,7 +113,7 @@ void Chunk::UpdateChunkMesh() {
                     break;
                 }
 
-                AddFace(&vertices, &indices,
+                AddFace(&m_TempVertices, &m_TempIndices,
                     data.RelativeFacePosition[0] + blockPosition,
                     data.RelativeFacePosition[1] + blockPosition,
                     data.RelativeFacePosition[2] + blockPosition,
@@ -129,6 +127,13 @@ void Chunk::UpdateChunkMesh() {
 
     }
 
-    m_Mesh.Create(vertices, indices);
+    m_ShouldCreateChunkMesh = true;
+}
 
+void Chunk::CreateMesh() {
+    m_Mesh.Create(m_TempVertices, m_TempIndices);
+    m_TempVertices.clear();
+    m_TempIndices.clear();
+
+    m_ShouldCreateChunkMesh = false;
 }

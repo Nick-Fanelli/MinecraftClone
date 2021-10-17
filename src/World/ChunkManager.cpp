@@ -28,6 +28,13 @@ void ChunkManager::CreateChunk(int chunkX, int chunkZ) {
     s_LoadChunkFutures.push_back(std::async(std::launch::async, LoadChunk, &s_Chunks, chunkX, chunkZ));
 }
 
+void ChunkManager::UpdateChunks() {
+    for(auto& chunk : s_Chunks) {
+        if(chunk.second->m_ShouldCreateChunkMesh)
+            chunk.second->CreateMesh();
+    }
+}
+
 void ChunkManager::RenderChunks(const Texture& spritesheet) {
 
     static bool createdChunk = false;
@@ -36,9 +43,5 @@ void ChunkManager::RenderChunks(const Texture& spritesheet) {
     for(auto& chunk : s_Chunks) {
         if(chunk.second->GetMesh().IsCreated())
             MeshRenderer::Submit(chunk.second->GetMesh(), chunk.second->GetChunkPosition() * (float) Chunk::CHUNK_SIZE, spritesheet);
-        else {
-            chunk.second->UpdateChunkMesh();
-            createdChunk = true;
-        }
     }
 }

@@ -16,6 +16,7 @@ public:
     static bool IsChunkCreated(int chunkX, int chunkZ);
 
     static void CreateChunk(int chunkX, int chunkZ);
+    static void UpdateChunks();
     static void RenderChunks(const Texture& spritesheet);
 
 private:

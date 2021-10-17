@@ -38,6 +38,7 @@ void PlayState::OnCreate() {
 void PlayState::OnUpdate(float deltaTime) {
 
     Camera::Update(deltaTime);
+    ChunkManager::UpdateChunks();
 
     // Input
     if(s_Wireframe)

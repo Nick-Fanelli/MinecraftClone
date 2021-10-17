@@ -14,6 +14,7 @@ public:
 
     void CreateChunk(int chunkX, int chunkZ);
     void UpdateChunkMesh();
+    void CreateMesh();
 
 public:
     const glm::vec3& GetChunkPosition() const { return m_ChunkPosition; }
@@ -32,10 +33,15 @@ private:
                  float lightValue, const glm::vec2& texturePosition, bool shouldInvert);
 
 private:
+    bool m_ShouldCreateChunkMesh = false;
+
     glm::vec3 m_ChunkPosition;
 
     std::array<Block::Block*, CHUNK_VOLUME> m_Blocks = { &Block::AIR };
     Mesh m_Mesh;
+
+    std::vector<Vertex> m_TempVertices;
+    std::vector<uint32_t> m_TempIndices;
 
     friend class ChunkManager;
 
