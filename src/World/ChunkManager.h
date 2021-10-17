@@ -1,5 +1,8 @@
 #pragma once
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/hash.hpp"
+
 #include "pch.h"
 
 #include "Chunk.h"
@@ -7,14 +10,15 @@
 class ChunkManager {
 
 public:
-    ChunkManager() = default;
-    ChunkManager(const ChunkManager&) = delete;
+    ChunkManager() = delete;
+    ~ChunkManager() = delete; 
 
-    void CreateChunk(int chunkX, int chunkZ);
-    
-    void RenderChunks(const Texture& spritesheet);
+    static bool IsChunkCreated(int chunkX, int chunkZ);
+
+    static void CreateChunk(int chunkX, int chunkZ);
+    static void RenderChunks(const Texture& spritesheet);
 
 private:
-    std::vector<std::shared_ptr<Chunk>> m_Chunks;
+    static inline std::unordered_map<glm::vec2, std::shared_ptr<Chunk>> s_Chunks;
 
 };

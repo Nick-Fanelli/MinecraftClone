@@ -11,7 +11,6 @@
 #include "World/ChunkManager.h"
 
 static Skybox s_Skybox;
-static ChunkManager s_ChunkManager;
 
 static bool s_Wireframe = false;
 
@@ -30,7 +29,7 @@ void PlayState::OnCreate() {
 
     for(int x = 0; x < worldSize; x++) {
         for(int z = 0; z < worldSize; z++) {
-            s_ChunkManager.CreateChunk(x, z);
+            ChunkManager::CreateChunk(x, z);
         }
     }
 
@@ -43,7 +42,7 @@ void PlayState::OnUpdate(float deltaTime) {
     // Input
     if(s_Wireframe)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    s_ChunkManager.RenderChunks(Block::GetBlockSpritesheet());
+    ChunkManager::RenderChunks(Block::GetBlockSpritesheet());
 
     if(s_Wireframe)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

@@ -34,7 +34,9 @@ private:
 private:
     glm::vec3 m_ChunkPosition;
 
-    std::array<Block::Block*, CHUNK_VOLUME> m_Blocks;
+    std::array<Block::Block*, CHUNK_VOLUME> m_Blocks = { &Block::AIR };
     Mesh m_Mesh;
+
+    friend class ChunkManager;
 
 };

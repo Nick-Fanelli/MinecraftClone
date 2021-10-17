@@ -37,15 +37,11 @@ void Chunk::CreateChunk(int chunkX, int chunkZ) {
 
         m_Blocks[i] = s_WorldGenerator.GetBlock(position + (m_ChunkPosition * (float) CHUNK_SIZE));
     }
-
-    UpdateChunkMesh();
 }
 
 void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
                     float lightValue, const glm::vec2& texturePosition, bool shouldInvert) {
     
-    // std::cout << Block::GetBlockSpritesheet().GetTextureID() << std::endl;
-
     static const float sheetID = Block::GetBlockSpritesheet().GetTextureID();
 
     static const int sheetWidth  = Block::GetBlockSpritesheet().GetWidth()  ;

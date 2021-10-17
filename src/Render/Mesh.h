@@ -12,6 +12,8 @@ struct Mesh {
 
     void Create(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
+    inline bool IsCreated() const { return m_VaoID != -1; }
+
     ~Mesh();
 
 private:
