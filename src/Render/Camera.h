@@ -29,8 +29,10 @@ public:
     static inline void SetPosition(const glm::vec3& position) { s_Position = position; UpdateViewMatrix(); }
     static inline void Move(const glm::vec3& deltaPosition) { s_Position += deltaPosition; UpdateViewMatrix(); }
 
-    static void Update(float deltaTime);
     static void MouseCursorCallback(GLFWwindow* window, double xPos, double yPos);
+
+    static const glm::vec3& GetFront() { return s_Front;  }
+    static const glm::vec3& GetUp() { return s_Up; }
 
 private:
     static void CalculateViewProjectionMatrix();
@@ -54,5 +56,7 @@ private:
 
     static inline float s_ZNear = 0.1f;
     static inline float s_ZFar = 1000.0f;
+
+    friend class Player;
 
 };

@@ -9,6 +9,7 @@
 #include "World/Chunk.h"
 #include "World/Skybox.h"
 #include "World/ChunkManager.h"
+#include "World/Player.h"
 
 static Skybox s_Skybox;
 
@@ -21,9 +22,8 @@ void PlayState::OnCreate() {
 
     s_Skybox.Create();
 
-    Camera::SetPosition({ 0.0f, 215.0f, 3.0f});
-
-    // s_ChunkManager.CreateChunk(0, 0, 0);
+    Player::SetPosition({ 0.0f, 255.0f, 0.0f });
+    Camera::SetPosition(Player::GetPosition());
 
     uint32_t worldSize = 10;
 
@@ -37,7 +37,8 @@ void PlayState::OnCreate() {
 
 void PlayState::OnUpdate(float deltaTime) {
 
-    Camera::Update(deltaTime);
+    Player::Update(deltaTime);
+
     ChunkManager::UpdateChunks();
 
     // Input

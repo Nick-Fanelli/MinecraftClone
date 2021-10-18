@@ -3,50 +3,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
-// 2.5f default
-static float s_PlayerSpeed = 10.92f * 2.0f;
-
-void Camera::Update(float deltaTime) {
-    static GLFWwindow* windowPtr = Display::GetWindowPtr();
-
-    float cameraSpeed = s_PlayerSpeed * deltaTime;
-    bool shouldUpdate = false;
-
-    if(glfwGetKey(windowPtr, GLFW_KEY_W) == GLFW_PRESS) {
-        s_Position += cameraSpeed * glm::vec3{ s_Front.x, 0.0f, s_Front.z };
-        shouldUpdate = true;
-    } 
-
-    if(glfwGetKey(windowPtr, GLFW_KEY_S) == GLFW_PRESS) {
-        s_Position -= cameraSpeed * glm::vec3{ s_Front.x, 0.0f, s_Front.z };
-        shouldUpdate = true;
-    }
-
-    if(glfwGetKey(windowPtr, GLFW_KEY_A) == GLFW_PRESS) {
-        s_Position -= glm::normalize(glm::cross(s_Front, s_Up)) * cameraSpeed;
-        shouldUpdate = true;
-    }
-
-    if(glfwGetKey(windowPtr, GLFW_KEY_D) == GLFW_PRESS) {
-        s_Position += glm::normalize(glm::cross(s_Front, s_Up)) * cameraSpeed;
-        shouldUpdate = true;
-    }
-
-    if(glfwGetKey(windowPtr, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        s_Position += cameraSpeed * s_Up;
-        shouldUpdate = true;
-    }
-
-    if(glfwGetKey(windowPtr, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        s_Position -= cameraSpeed * s_Up;
-        shouldUpdate = true;
-    }
-
-    if(shouldUpdate)
-        UpdateViewMatrix();
-
-}
-
 static float s_LastX, s_LastY;
 static bool s_FirstMouse = true;
 
