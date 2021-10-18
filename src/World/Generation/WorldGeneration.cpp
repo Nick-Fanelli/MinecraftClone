@@ -23,7 +23,7 @@ static FastNoiseLite s_Noise;
 
 static FastNoiseLite s_CaveNoise;
 
-static constexpr float s_Magnitude = 10.0f;
+static constexpr float s_Magnitude = 40.0f;
 static constexpr float s_Threshold = 0.5f;
 
 static constexpr int s_HeightDifference = 80;
@@ -41,7 +41,7 @@ Block::Block* PerlinNoiseWorldGenerator::GetBlock(const glm::vec3& position) {
         s_Noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
         s_Noise.SetSeed(rand());
         s_Noise.SetFractalType(FastNoiseLite::FractalType_PingPong);
-        s_Noise.SetFractalPingPongStrength(1.25f);
+        s_Noise.SetFractalPingPongStrength(1.50f);
 
         s_CaveNoise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
         s_CaveNoise.SetSeed(rand());
