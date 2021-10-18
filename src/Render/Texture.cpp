@@ -34,6 +34,7 @@ void Texture::Create() {
 }
 
 void Texture::Destroy() {
+
     if(m_TextureID == -1)
         return;
 

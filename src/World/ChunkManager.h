@@ -10,16 +10,16 @@
 class ChunkManager {
 
 public:
-    ChunkManager() = delete;
-    ~ChunkManager() = delete; 
+    ChunkManager() = default;
+    ChunkManager(std::shared_ptr<Texture> blocksTextureAtlas);
 
-    static bool IsChunkCreated(int chunkX, int chunkZ);
+    bool IsChunkCreated(int chunkX, int chunkZ);
 
-    static void CreateChunk(int chunkX, int chunkZ);
-    static void UpdateChunks();
-    static void RenderChunks(const Texture& spritesheet);
+    void CreateChunk(int chunkX, int chunkZ);
+    void UpdateChunks();
+    void RenderChunks(std::shared_ptr<Texture> spritesheet);
 
 private:
-    static inline std::unordered_map<glm::vec2, std::shared_ptr<Chunk>> s_Chunks;
+    std::unordered_map<glm::vec2, std::shared_ptr<Chunk>> m_Chunks;
 
 };

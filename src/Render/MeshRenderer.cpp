@@ -69,12 +69,12 @@ void MeshRenderer::Submit(const Mesh& mesh, const Texture& texture) {
     Shader::Unbind();
 }
 
-void MeshRenderer::Submit(const Mesh& mesh, const glm::vec3& transformation, const Texture& texture) {
+void MeshRenderer::Submit(const Mesh& mesh, const glm::vec3& transformation, std::shared_ptr<Texture> texture) {
     s_Shader.Bind();
     s_Shader.AddUniformMat4("uViewProjection", Camera::GetViewProjection());
     s_Shader.AddUniformVec3("uTransformation", transformation);
 
-    glBindTexture(GL_TEXTURE_2D, texture.GetTextureID());
+    glBindTexture(GL_TEXTURE_2D, texture->GetTextureID());
 
     glBindVertexArray(mesh.m_VaoID);
 

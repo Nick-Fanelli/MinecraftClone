@@ -18,29 +18,33 @@ static void LoadChunk(std::unordered_map<glm::vec2, std::shared_ptr<Chunk>>* chu
 }
 
 bool ChunkManager::IsChunkCreated(int chunkX, int chunkZ) {
-    return s_Chunks.find({chunkX, chunkZ}) != s_Chunks.end();
+    return m_Chunks.find({chunkX, chunkZ}) != m_Chunks.end();
+}
+
+ChunkManager::ChunkManager(std::shared_ptr<Texture> blocksTextureAtlas) {
+    Chunk::s_BlocksTextureAtlas = blocksTextureAtlas;
 }
 
 void ChunkManager::CreateChunk(int chunkX, int chunkZ) {
     if(IsChunkCreated(chunkX, chunkZ))
         return;
 
-    s_LoadChunkFutures.push_back(std::async(std::launch::async, LoadChunk, &s_Chunks, chunkX, chunkZ));
+    s_LoadChunkFutures.push_back(std::async(std::launch::async, LoadChunk, &m_Chunks, chunkX, chunkZ));
 }
 
 void ChunkManager::UpdateChunks() {
-    for(auto& chunk : s_Chunks) {
+    for(auto& chunk : m_Chunks) {
         if(chunk.second->m_ShouldCreateChunkMesh)
             chunk.second->CreateMesh();
     }
 }
 
-void ChunkManager::RenderChunks(const Texture& spritesheet) {
+void ChunkManager::RenderChunks(std::shared_ptr<Texture> spritesheet) {
 
     static bool createdChunk = false;
     createdChunk = false;
 
-    for(auto& chunk : s_Chunks) {
+    for(auto& chunk : m_Chunks) {
         if(chunk.second->GetMesh().IsCreated())
             MeshRenderer::Submit(chunk.second->GetMesh(), chunk.second->GetChunkPosition() * (float) Chunk::CHUNK_SIZE, spritesheet);
     }

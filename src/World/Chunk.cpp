@@ -44,12 +44,12 @@ void Chunk::CreateChunk(int chunkX, int chunkZ) {
 void Chunk::AddFace(std::vector<Vertex>* vertices, std::vector<uint32_t>* indices, const glm::vec3& first, const glm::vec3& second, const glm::vec3& third, const glm::vec3& fourth,
                     float lightValue, const glm::vec2& texturePosition, bool shouldInvert) {
     
-    static const float sheetID = Block::GetBlockSpritesheet().GetTextureID();
+    const float sheetID = s_BlocksTextureAtlas->GetTextureID();
 
-    static const int sheetWidth  = Block::GetBlockSpritesheet().GetWidth()  ;
-    static const int sheetHeight = Block::GetBlockSpritesheet().GetHeight() ;
+    static const int sheetWidth  = s_BlocksTextureAtlas->GetWidth()  ;
+    static const int sheetHeight = s_BlocksTextureAtlas->GetHeight() ;
 
-    static const float textureCoordDifference = (float) Block::SpriteSheetSize / (float) sheetWidth;
+    static const float textureCoordDifference = 16.0f / (float) sheetWidth;
 
     glm::vec2 textureCoords = texturePosition * textureCoordDifference;
 

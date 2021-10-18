@@ -33,6 +33,9 @@ private:
                  float lightValue, const glm::vec2& texturePosition, bool shouldInvert);
 
 private:
+    static inline std::shared_ptr<Texture> s_BlocksTextureAtlas;
+
+private:
     bool m_ShouldCreateChunkMesh = false;
 
     glm::vec3 m_ChunkPosition;

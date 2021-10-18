@@ -11,13 +11,20 @@
 #include "World/ChunkManager.h"
 #include "World/Player.h"
 
+static ChunkManager s_ChunkManager;
+
 static Skybox s_Skybox;
+static std::shared_ptr<Texture> s_BlockSpritesheet;
 
 static bool s_Wireframe = false;
 
 void PlayState::OnCreate() {
 
-    Block::InitializeBlockTextures();
+    s_BlockSpritesheet = std::make_shared<Texture>("res/images/blocks-texture-atlas.png");
+    s_BlockSpritesheet->Create();
+
+    s_ChunkManager = { s_BlockSpritesheet };
+
     MeshRenderer::OnInitialize();
 
     s_Skybox.Create();
@@ -29,7 +36,7 @@ void PlayState::OnCreate() {
 
     for(int x = 0; x < worldSize; x++) {
         for(int z = 0; z < worldSize; z++) {
-            ChunkManager::CreateChunk(x, z);
+            s_ChunkManager.CreateChunk(x, z);
         }
     }
 
@@ -39,12 +46,12 @@ void PlayState::OnUpdate(float deltaTime) {
 
     Player::Update(deltaTime);
 
-    ChunkManager::UpdateChunks();
+    s_ChunkManager.UpdateChunks();
 
     // Input
     if(s_Wireframe)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    ChunkManager::RenderChunks(Block::GetBlockSpritesheet());
+    s_ChunkManager.RenderChunks(s_BlockSpritesheet);
 
     if(s_Wireframe)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -54,5 +61,5 @@ void PlayState::OnUpdate(float deltaTime) {
 
 void PlayState::OnDestroy() {
     s_Skybox.~Skybox();
-    Block::DestroyBlockTextures();
+    s_BlockSpritesheet->Destroy();
 }
