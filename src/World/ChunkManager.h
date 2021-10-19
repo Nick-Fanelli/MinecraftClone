@@ -19,6 +19,8 @@ public:
     void UpdateChunks();
     void RenderChunks(std::shared_ptr<Texture> spritesheet);
 
+    void ClearChunks();
+
 private:
     std::unordered_map<glm::vec2, std::shared_ptr<Chunk>> m_Chunks;
 

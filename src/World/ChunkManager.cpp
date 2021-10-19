@@ -1,12 +1,11 @@
 #include "ChunkManager.h"
 
-#include <future>
+#include <thread>
 #include <mutex>
 
 #include "Render/MeshRenderer.h"
 
 static std::mutex s_ChunksMutex;
-static std::vector<std::future<void>> s_LoadChunkFutures;
 
 static void LoadChunk(std::unordered_map<glm::vec2, std::shared_ptr<Chunk>>* chunks, int chunkX, int chunkZ) {
     auto chunkPtr = std::make_shared<Chunk>();
@@ -29,7 +28,13 @@ void ChunkManager::CreateChunk(int chunkX, int chunkZ) {
     if(IsChunkCreated(chunkX, chunkZ))
         return;
 
-    s_LoadChunkFutures.push_back(std::async(std::launch::async, LoadChunk, &m_Chunks, chunkX, chunkZ));
+    m_Chunks[{chunkX, chunkZ}] = std::make_shared<Chunk>(); // Allocate something
+
+    std::thread{LoadChunk, &m_Chunks, chunkX, chunkZ}.detach();
+}
+
+void ChunkManager::ClearChunks() {
+    m_Chunks.clear();
 }
 
 void ChunkManager::UpdateChunks() {

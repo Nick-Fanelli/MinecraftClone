@@ -29,16 +29,17 @@ void PlayState::OnCreate() {
 
     s_Skybox.Create();
 
+    Player::Initialize(&s_ChunkManager);
     Player::SetPosition({ 0.0f, 255.0f, 0.0f });
     Camera::SetPosition(Player::GetPosition());
 
-    uint32_t worldSize = 10;
+    // uint32_t worldSize = 10;
 
-    for(int x = 0; x < worldSize; x++) {
-        for(int z = 0; z < worldSize; z++) {
-            s_ChunkManager.CreateChunk(x, z);
-        }
-    }
+    // for(int x = 0; x < worldSize; x++) {
+    //     for(int z = 0; z < worldSize; z++) {
+    //         s_ChunkManager.CreateChunk(x, z);
+    //     }
+    // }
 
 }
 
