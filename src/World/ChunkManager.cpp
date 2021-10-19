@@ -33,6 +33,18 @@ void ChunkManager::CreateChunk(int chunkX, int chunkZ) {
     std::thread{LoadChunk, &m_Chunks, chunkX, chunkZ}.detach();
 }
 
+void ChunkManager::SetChunks(const glm::vec2* chunkPositions, int chunkPositionsSize) {
+
+
+}
+
+void ChunkManager::RemoveChunk(int chunkX, int chunkZ) {
+    if (!IsChunkCreated(chunkX, chunkZ))
+        return;
+
+    m_Chunks[{chunkX, chunkZ}] = nullptr;
+}
+
 void ChunkManager::ClearChunks() {
     m_Chunks.clear();
 }

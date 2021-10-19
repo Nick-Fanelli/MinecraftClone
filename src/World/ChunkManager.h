@@ -15,9 +15,13 @@ public:
 
     bool IsChunkCreated(int chunkX, int chunkZ);
 
+    void SetChunks(const glm::vec2* chunkPositions, int chunkPositionsSize);
+
     void CreateChunk(int chunkX, int chunkZ);
     void UpdateChunks();
     void RenderChunks(std::shared_ptr<Texture> spritesheet);
+
+    void RemoveChunk(int chunkX, int chunKZ);
 
     void ClearChunks();
 

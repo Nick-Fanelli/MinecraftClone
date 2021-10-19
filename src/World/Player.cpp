@@ -50,8 +50,10 @@ void Player::Update(float deltaTime) {
         glm::vec2 currentChunk = { floor(s_Position.x / Chunk::CHUNK_SIZE), floor(s_Position.z / Chunk::CHUNK_SIZE) };
 
         if(!s_ChunkManagerPtr->IsChunkCreated(currentChunk.x, currentChunk.y)) {
-            // s_ChunkManagerPtr->ClearChunks();
-            s_ChunkManagerPtr->CreateChunk(currentChunk.x, currentChunk.y);
+            glm::vec2 chunks[] = { currentChunk };
+
+            s_ChunkManagerPtr->SetChunks(chunks, 1);
+            // s_ChunkManagerPtr->CreateChunk(currentChunk.x, currentChunk.y);
         }
 
         // std::cout << currentChunk << std::endl;
