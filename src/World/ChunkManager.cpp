@@ -34,8 +34,29 @@ void ChunkManager::CreateChunk(int chunkX, int chunkZ) {
 }
 
 void ChunkManager::SetChunks(const glm::vec2* chunkPositions, int chunkPositionsSize) {
+    for (int i = 0; i < chunkPositionsSize; i++) {
+        CreateChunk(chunkPositions[i].x, chunkPositions[i].y);
+    }
 
+    std::vector<glm::vec2> chunksToErase;
 
+    for (auto& chunk : m_Chunks) {
+        bool isSafe = false;
+
+        for (int i = 0; i < chunkPositionsSize; i++) {
+            if (chunkPositions[i] == chunk.first) {
+                isSafe = true;
+                break;
+            }
+        }
+
+        if (!isSafe)
+            chunksToErase.push_back(chunk.first);
+    }
+
+    for (auto& erase : chunksToErase) {
+        m_Chunks.erase(erase);
+    }
 }
 
 void ChunkManager::RemoveChunk(int chunkX, int chunkZ) {

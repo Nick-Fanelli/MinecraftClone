@@ -23,7 +23,7 @@ static FastNoiseLite s_Noise;
 
 static FastNoiseLite s_CaveNoise;
 
-static constexpr float s_Magnitude = 40.0f;
+static constexpr float s_Magnitude = 100.0f;
 static constexpr float s_Threshold = 0.5f;
 
 static constexpr int s_HeightDifference = 80;
