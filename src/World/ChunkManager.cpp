@@ -12,8 +12,9 @@ static void LoadChunk(std::unordered_map<glm::vec2, std::shared_ptr<Chunk>>* chu
 
     chunkPtr->CreateChunk(chunkX, chunkZ);
 
-    std::lock_guard<std::mutex> lock(s_ChunksMutex);
+    s_ChunksMutex.lock();
     (*chunks)[{chunkX, chunkZ}] = chunkPtr;
+    s_ChunksMutex.unlock();
 }
 
 bool ChunkManager::IsChunkCreated(int chunkX, int chunkZ) {
